@@ -24,7 +24,10 @@
     "packages/*"
   ],
   "dependencies": {
+    "apollo-server-express": "^3.13.0",
     "drizzle-orm": "^0.44.2",
+    "express": "^5.1.0",
+    "graphql": "^16.11.0",
     "pg": "^8.16.0"
   }
 }
