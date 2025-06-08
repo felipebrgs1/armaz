@@ -1,71 +1,51 @@
 import { db } from "./db";
 import * as schema from "./db/schema";
-import express from "express";
-import { ApolloServer } from "apollo-server-express";
-import { gql } from "apollo-server-express";
-import { eq } from "drizzle-orm";
+import { ApolloServer } from '@apollo/server';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import { expressMiddleware } from '@as-integrations/express5';
+import express from 'express';
+import http from 'http';
+import cors from 'cors';
+interface MyContext {
+    token?: string;
+}
 
-
-
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
+const typeDefs = `
+    type Query {
+        getUser(email: String): String
+    }
 `;
-
-const teste = async () => {
-    const user = await db.query.users.findFirst();
-    return user ? user.name : null;
-};
 const resolvers = {
     Query: {
-        hello: teste,
+        getUser: async (_parent: any, { email }: { email: string }) => {
+            const user = await db.query.users.findFirst({
+                where: (u, { eq }) => eq(u.email, email),
+            });
+            return `Hello, ${user?.name ?? "unknown user"}`;
+        },
     },
 };
 
-async function startServer() {
-    const app = express();
-    const server = new ApolloServer({ typeDefs, resolvers });
-    await server.start();
-    server.applyMiddleware({ app });
+const app = express();
+const httpServer = http.createServer(app);
 
-    app.use(express.json());
+const server = new ApolloServer<MyContext>({
+    typeDefs,
+    resolvers,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+});
+await server.start();
 
-    app.get("/", (req, res) => {
-        res.send("API rodando!");
-    });
+app.use(
+    '/',
+    cors<cors.CorsRequest>(),
+    express.json(),
+    expressMiddleware(server, {
+        context: async ({ req }) => ({ token: req.headers.token }),
+    }),
+);
 
-    app.post("/user", async (req, res) => {
-        const { name, email, password } = req.body;
-
-        // validação básica
-        if (!name || !email || !password) {
-            return res.status(400).json({ error: "Nome, e-mail e senha são obrigatórios." });
-        }
-        try {
-            const existing = await db.query.users.findFirst({
-                where: (users, { eq }) => eq(users.email, email),
-            });
-
-            if (existing) {
-                return res.status(409).json({ error: "Usuário já existe." });
-            }
-            await db.insert(schema.users).values({
-                name,
-                email,
-                passwordHash: password,
-            });
-
-            return res.status(201).json({ message: "Usuário criado com sucesso." });
-        } catch (err) {
-            console.error("Erro ao criar usuário:", err);
-            return res.status(500).json({ error: "Erro interno do servidor." });
-        }
-    });
-
-    app.listen(4000, () => {
-        console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
-    });
-}
-
-startServer();
+await new Promise<void>((resolve) =>
+    httpServer.listen({ port: 4000 }, resolve),
+);
+console.log(`🚀 Server ready at http://localhost:4000/`);

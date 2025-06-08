@@ -1,0 +1,26 @@
+{
+    "name": "armaz",
+    "private": true,
+    "module": "main.ts",
+    "type": "module",
+    "scripts": {
+        "build": "turbo run build",
+        "dev": "bun run ./src/main.ts",
+        "check-types": "turbo run check-types"
+    },
+    "devDependencies": {
+        "@types/pg": "^8.15.4",
+        "drizzle-kit": "^0.31.1",
+        "prettier": "^3.5.3",
+        "turbo": "^2.5.4",
+        "typescript": "5.8.2"
+    },
+    "dependencies": {
+        "@as-integrations/express5": "^1.1.0",
+        "apollo-server-express": "^3.13.0",
+        "drizzle-orm": "^0.44.2",
+        "express": "^5.1.0",
+        "graphql": "^16.11.0",
+        "pg": "^8.16.0"
+    }
+}
