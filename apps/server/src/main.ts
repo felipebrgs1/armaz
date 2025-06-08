@@ -1,5 +1,3 @@
-import { db } from "./db";
-import * as schema from "./db/schema";
 import { ApolloServer } from '@apollo/server';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { expressMiddleware } from '@as-integrations/express5';
