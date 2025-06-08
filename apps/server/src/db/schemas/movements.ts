@@ -8,7 +8,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { products } from './products';
 import { locations } from './locations';
-import { users } from './users';
+import { users } from '../../modules/user/userModel';
 
 // Histórico de movimentações (entrada/saída)
 export const movements = pgTable('movements', {

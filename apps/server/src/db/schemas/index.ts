@@ -1,5 +1,5 @@
 // Re-export all schemas
-export * from './users';
+export * from '../../modules/user/userModel';
 export * from './products';
 export * from './locations';
 export * from './inventory';

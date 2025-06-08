@@ -6,25 +6,15 @@ import { expressMiddleware } from '@as-integrations/express5';
 import express from 'express';
 import http from 'http';
 import cors from 'cors';
+import { userTypeDefs } from './modules/user/userSchema';
+import { userResolver } from './modules/user/userResolver';
 interface MyContext {
     token?: string;
 }
 
-const typeDefs = `
-    type Query {
-        getUser(email: String): String
-    }
-`;
-const resolvers = {
-    Query: {
-        getUser: async (_parent: any, { email }: { email: string }) => {
-            const user = await db.query.users.findFirst({
-                where: (u, { eq }) => eq(u.email, email),
-            });
-            return `Hello, ${user?.name ?? "unknown user"}`;
-        },
-    },
-};
+const typeDefs = userTypeDefs;
+
+const resolvers = userResolver;
 
 const app = express();
 const httpServer = http.createServer(app);
