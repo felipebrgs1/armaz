@@ -1,84 +1,90 @@
-# Turborepo starter
+# Sistema de Gestão de Armazém
 
-This Turborepo starter is maintained by the Turborepo core team.
+Projeto feito com express + graphql(apollo client), Drizzle , postgres(no docker por enquanto)
+No front sera Next + tailwind 4 + shadcn
 
-## Using this example
+## ✅ Rotas Implementadas
 
-Run the following command:
+### 👤 User Module
+- [x] **Query:** `user(id: ID!)` - Buscar usuário por ID
+- [x] **Mutation:** `createUser(name: String!, email: String!, passwordHash: String!)` - Criar usuário
 
-```sh
-npx create-turbo@latest
-```
+### 📦 Product Module  
+- [x] **Query:** `product(id: ID!)` - Buscar produto por ID
+- [x] **Query:** `products` - Listar todos os produtos
+- [x] **Mutation:** `createProduct(name: String!, sku: String, description: String, unit: String!)` - Criar produto
+- [x] **Mutation:** `updateProduct(id: ID!, name: String, sku: String, description: String, unit: String)` - Atualizar produto
+- [x] **Mutation:** `deleteProduct(id: ID!)` - Deletar produto
 
-## What's inside?
+### 📍 Location Module
+- [x] **Query:** `location(id: ID!)` - Buscar local por ID
+- [x] **Query:** `locations` - Listar todos os locais
+- [x] **Mutation:** `createLocation(name: String!, description: String)` - Criar local
+- [x] **Mutation:** `updateLocation(id: ID!, name: String, description: String)` - Atualizar local
+- [x] **Mutation:** `deleteLocation(id: ID!)` - Deletar local
 
-This Turborepo includes the following packages/apps:
+### 📊 Inventory Module
+- [x] **Query:** `inventory(productId: ID!, locationId: ID!)` - Buscar estoque específico
+- [x] **Query:** `inventoryByProduct(productId: ID!)` - Buscar estoque por produto
+- [x] **Query:** `inventoryByLocation(locationId: ID!)` - Buscar estoque por local
+- [x] **Query:** `allInventory` - Listar todo o estoque
+- [x] **Mutation:** `updateInventory(productId: ID!, locationId: ID!, quantity: Float!)` - Atualizar estoque
+- [x] **Mutation:** `deleteInventory(productId: ID!, locationId: ID!)` - Deletar registro de estoque
 
-### Apps and Packages
+### 🔄 Movement Module
+- [x] **Query:** `movement(id: ID!)` - Buscar movimentação por ID
+- [x] **Query:** `movements` - Listar todas as movimentações
+- [x] **Query:** `movementsByProduct(productId: ID!)` - Buscar movimentações por produto
+- [x] **Query:** `movementsByLocation(locationId: ID!)` - Buscar movimentações por local
+- [x] **Mutation:** `createMovement(productId: ID!, locationId: ID!, userId: ID!, type: String!, quantity: Float!, notes: String)` - Criar movimentação
+- [x] **Mutation:** `deleteMovement(id: ID!)` - Deletar movimentação
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+## 🌐 Implementação no Front
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### 👤 User Module
+- [ ] Página de login/autenticação
+- [ ] Cadastro de usuários
+- [ ] Listagem de usuários
+- [ ] Perfil do usuário
 
-### Utilities
+### 📦 Product Module
+- [ ] Dashboard de produtos
+- [ ] Formulário de cadastro de produtos
+- [ ] Listagem de produtos com filtros
+- [ ] Edição de produtos
+- [ ] Exclusão de produtos
+- [ ] Busca por SKU/nome
 
-This Turborepo has some additional tools already setup for you:
+### 📍 Location Module
+- [ ] Cadastro de locais de armazenamento
+- [ ] Listagem de locais
+- [ ] Edição de locais
+- [ ] Exclusão de locais
+- [ ] Visualização de capacidade por local
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+### 📊 Inventory Module
+- [ ] Dashboard de estoque geral
+- [ ] Visualização de estoque por produto
+- [ ] Visualização de estoque por local
+- [ ] Alertas de estoque baixo
+- [ ] Relatórios de estoque
+- [ ] Atualização manual de estoque
 
-### Build
+### 🔄 Movement Module
+- [ ] Registro de entrada de produtos
+- [ ] Registro de saída de produtos
+- [ ] Histórico de movimentações
+- [ ] Filtros por produto/local/usuário
+- [ ] Relatórios de movimentação
+- [ ] Dashboard de atividades recentes
 
-To build all apps and packages, run the following command:
+### 📱 Features Gerais
+- [ ] Layout responsivo
+- [ ] Sistema de notificações
+- [ ] Exportação de relatórios (PDF/Excel)
+- [ ] Busca global
+- [ ] Tema dark/light
+- [ ] PWA (Progressive Web App)
 
-```
-cd my-turborepo
-pnpm build
-```
+## 📋 To DO:
 
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
