@@ -6,9 +6,9 @@
         "dev": "turbo run dev",
         "lint": "turbo run lint",
         "studio": "turbo run studio",
-        "push": "bun drizzle-kit push",
-        "migrate": "bun drizzle-kit migrate",
-        "generate": "bun drizzle-kit generate",
+        "push": "turbo run push",
+        "migrate": "turbo run migrate",
+        "generate": "turbo run drizzle-kit generate",
         "format": "prettier --write \"**/*.{ts,tsx,md}\"",
         "check-types": "turbo run check-types"
     },
